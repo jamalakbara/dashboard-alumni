@@ -14,7 +14,7 @@
                 <div class="row">
                     <?php foreach ($bidang->getResultArray() as $data => $d) { ?>
                         <div class="col-lg-3 col-md-6">
-                            <div class="card bg-c-green total-card">
+                            <div class="card bg-c-green total-card" style="height: 10em;">
                                 <div class="card-block">
                                     <div class="text-left">
                                         <h4><?= $d['JUMLAH'] ?></h4>

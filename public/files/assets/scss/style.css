@@ -2725,67 +2725,67 @@ table thead .border-bottom-info th {
 /*======= All-Borders-color css ends  ======= */
 /*======= All-color css start  ======= */
 .bg-facebook {
-  background: #3b5997;
+  background: #3B5997;
 }
 
 .text-facebook {
-  color: #3b5997;
+  color: #3B5997;
 }
 
 .bg-twitter {
-  background: #42c0fb;
+  background: #42C0FB;
 }
 
 .text-twitter {
-  color: #42c0fb;
+  color: #42C0FB;
 }
 
 .bg-dribbble {
-  background: #ec4a89;
+  background: #EC4A89;
 }
 
 .text-dribbble {
-  color: #ec4a89;
+  color: #EC4A89;
 }
 
 .bg-pinterest {
-  background: #bf2131;
+  background: #BF2131;
 }
 
 .text-pinterest {
-  color: #bf2131;
+  color: #BF2131;
 }
 
 .bg-youtube {
-  background: #e0291d;
+  background: #E0291D;
 }
 
 .text-youtube {
-  color: #e0291d;
+  color: #E0291D;
 }
 
 .bg-googleplus {
-  background: #c73e2e;
+  background: #C73E2E;
 }
 
 .text-googleplus {
-  color: #c73e2e;
+  color: #C73E2E;
 }
 
 .bg-instagram {
-  background: #aa7c62;
+  background: #AA7C62;
 }
 
 .text-instagram {
-  color: #aa7c62;
+  color: #AA7C62;
 }
 
 .bg-viber {
-  background: #7b519d;
+  background: #7B519D;
 }
 
 .text-viber {
-  color: #7b519d;
+  color: #7B519D;
 }
 
 .bg-amazon {
@@ -2805,11 +2805,11 @@ table thead .border-bottom-info th {
 }
 
 .bg-dropbox {
-  background: #3380ff;
+  background: #3380FF;
 }
 
 .text-dropbox {
-  color: #3380ff;
+  color: #3380FF;
 }
 
 .bg-c-blue {
@@ -2845,19 +2845,19 @@ table thead .border-bottom-info th {
 }
 
 .bg-c-orenge {
-  background: #fe8a7d;
+  background: #FE8A7D;
 }
 
 .text-c-orenge {
-  color: #fe8a7d;
+  color: #FE8A7D;
 }
 
 .bg-c-lite-green {
-  background: #69cec6;
+  background: #69CEC6;
 }
 
 .text-c-lite-green {
-  color: #69cec6;
+  color: #69CEC6;
 }
 
 .bg-c-purple {
@@ -11446,11 +11446,11 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
 }
 
 .pcoded[layout-type="dark"] .bg-c-orenge {
-  background: #fe8a7d;
+  background: #FE8A7D;
 }
 
 .pcoded[layout-type="dark"] .bg-c-lite-green {
-  background: #69cec6;
+  background: #69CEC6;
 }
 
 .pcoded[layout-type="dark"] .bg-c-purple {

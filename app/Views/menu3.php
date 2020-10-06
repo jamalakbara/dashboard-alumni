@@ -2,20 +2,20 @@
 
 <?= $this->section('content') ?>
 
-<head>
-    <!-- Data Table Css -->
-    <link rel="stylesheet" type="text/css" href="/files/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="/files/assets/pages/data-table/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="/files/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
-    <!-- themify-icons line icon -->
-    <link rel="stylesheet" type="text/css" href="/files/assets/icon/themify-icons/themify-icons.css">
-    <!-- ico font -->
-    <link rel="stylesheet" type="text/css" href="/files/assets/icon/icofont/css/icofont.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" type="text/css" href="/files/assets/icon/font-awesome/css/font-awesome.min.css">
-    <!-- Style.css -->
-    <link rel="stylesheet" type="text/css" href="/files/assets/css/pages.css">
-</head>
+<!-- <head> -->
+<!-- Data Table Css -->
+<link rel="stylesheet" type="text/css" href="/files/bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" type="text/css" href="/files/assets/pages/data-table/css/buttons.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="/files/bower_components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css">
+<!-- themify-icons line icon -->
+<link rel="stylesheet" type="text/css" href="/files/assets/icon/themify-icons/themify-icons.css">
+<!-- ico font -->
+<link rel="stylesheet" type="text/css" href="/files/assets/icon/icofont/css/icofont.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" type="text/css" href="/files/assets/icon/font-awesome/css/font-awesome.min.css">
+<!-- Style.css -->
+<link rel="stylesheet" type="text/css" href="/files/assets/css/pages.css">
+<!-- </head> -->
 
 <!-- Base style - Hover table start -->
 <div class="row">
@@ -36,7 +36,7 @@
             </div>
             <div class="card-block">
                 <div class="dt-responsive table-responsive">
-                    <table id="table-style-hover" class="table table-striped table-hover table-bordered nowrap">
+                    <table id="table_id" class="table table-striped table-hover table-bordered nowrap">
                         <thead>
                             <tr>
                                 <th>Nama</th>
@@ -46,24 +46,13 @@
                                 <th>Nomor Telepon</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php foreach ($pekerjaan->getResultArray() as $data => $d) { ?>
-                                <tr>
-                                    <td><?= $d['NAMA'] ?></td>
-                                    <td><?= $d['PRODI'] ?></td>
-                                    <td><?= $d['INSTITUSI'] ?></td>
-                                    <td><?= $d['EMAIL'] ?></td>
-                                    <td><?= $d['TLP'] ?></td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
                         <tfoot>
                             <tr>
-                                <th>Nama Prodi</th>
-                                <th>Angkatan</th>
+                                <th>Nama</th>
+                                <th>Prodi</th>
                                 <th>Nama Perusahaan</th>
-                                <th>Jenis Pekerjaan</th>
-                                <th>Kategori Pekerjaan</th>
+                                <th>Email</th>
+                                <th>Nomor Telepon</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -183,5 +172,24 @@
 <script src="/files/bower_components/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="/files/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
 <!-- Custom js -->
-<script src="/files/assets/pages/data-table/js/data-table-custom.js"></script>
+<!-- <script src="/files/assets/pages/data-table/js/data-table-custom.js"></script> -->
+<script>
+    $(document).ready(() => {
+        $("#table_id").DataTable({
+            paging: true,
+            searching: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '<?= site_url('Home/getData') ?>',
+                type: 'POST'
+            },
+            columnDefs: [{
+                targets: [0, 1, 2, 3, 4],
+                orderable: false
+            }],
+            order: []
+        })
+    })
+</script>
 <?= $this->endSection() ?>

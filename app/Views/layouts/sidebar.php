@@ -52,6 +52,14 @@
                     <span class="pcoded-mtext">Menu 3</span>
                 </a>
             </li>
+            <li class="<?php if ($title == 'Upload') { ?>active<?php } ?>">
+                <a href="/upload" class="waves-effect waves-dark">
+                    <span class="pcoded-micon">
+                        <i class="feather icon-home"></i>
+                    </span>
+                    <span class="pcoded-mtext">Upload</span>
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

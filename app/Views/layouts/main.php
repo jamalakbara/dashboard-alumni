@@ -35,6 +35,7 @@
 
     <!-- Style.css -->
     <link rel="stylesheet" type="text/css" href="/files/assets/css/widget.css">
+    <link rel="stylesheet" href="/files/assets/css/custom.css">
 </head>
 
 <body>
@@ -59,6 +60,12 @@
     <script src="/files/assets/js/vertical/vertical-layout.min.js"></script>
     <script type="text/javascript" src="/files/assets/js/script.min.js"></script>
     <script src="/files/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-bar"></div>
+    </div>
+    <!-- [ Pre-loader ] end -->
 
     <div id="pcoded" class="pcoded">
         <div class="pcoded-overlay-box"></div>
