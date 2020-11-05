@@ -31,12 +31,17 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
-$routes->post('/', 'Home::index');
-$routes->get('/dashboard', 'Home::index');
-$routes->get('/menu2', 'Home::menu2');
-$routes->get('/menu3', 'Home::menu3');
-$routes->post('/filter-menu3', 'Home::menu3');
+$routes->get('/', 'Home::rekapitulasi');
+$routes->post('/', 'Home::rekapitulasi');
+$routes->get('/dashboard', 'Home::rekapitulasi');
+
+$routes->get('/bidang', 'Home::bidang');
+$routes->post('/bidang', 'Home::bidang');
+
+$routes->get('/alumni', 'Home::alumni');
+$routes->get('/alumni/detail/(:segment)', 'Home::alumniDetail/$1');
+$routes->post('/filter-alumni', 'Home::alumni');
+
 $routes->get('/upload', 'Home::upload');
 $routes->post('/upload', 'Home::upload');
 

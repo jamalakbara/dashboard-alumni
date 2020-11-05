@@ -1,5 +1,11 @@
+:root {
+  --merah: #dc3545;
+  --merah-biasa: #ff1515;
+}
+
 .floating-filter {
-  background-color: white;
+  background-color: #448aff;
+  color: white;
   height: 25px;
   width: 25px;
   display: grid;
@@ -19,4 +25,116 @@
 
 .floating-filter > i {
   font-size: 1.5em;
+}
+
+.pcoded .pcoded-header[header-theme="theme1"] {
+  background: var(--merah);
+}
+
+.pcoded[fream-type="theme1"][theme-layout="vertical"] .page-header {
+  background: var(--merah);
+}
+
+.pcoded[theme-layout="vertical"]
+  .pcoded-navbar[active-item-theme="theme1"]
+  .pcoded-item
+  > li.active
+  > a {
+  background: var(--merah);
+}
+
+.pcoded[theme-layout="vertical"]
+  .pcoded-navbar[active-item-theme="theme1"]
+  .pcoded-item
+  > li:hover
+  > a,
+.pcoded[theme-layout="vertical"]
+  .pcoded-navbar[active-item-theme="theme1"]
+  .pcoded-item
+  > li:hover:hover
+  > a {
+  background: var(--merah);
+}
+
+.pcoded[theme-layout="vertical"]
+  .pcoded-navbar[active-item-theme="theme1"]
+  .pcoded-item
+  > li:hover
+  > a,
+.pcoded[theme-layout="vertical"]
+  .pcoded-navbar[active-item-theme="theme1"]
+  .pcoded-item
+  > li:hover:hover
+  > a {
+  background-color: var(--merah);
+}
+
+.loader-bg .loader-bar {
+  background-color: var(--merah);
+}
+
+.pcoded .pcoded-navbar .pcoded-navigation-label[menu-title-theme="theme1"] {
+  color: var(--merah);
+}
+
+.page-item.active .page-link {
+  background-color: var(--merah) !important;
+  border-color: var(--merah) !important;
+}
+
+.active > .page-link {
+  color: #ffffff !important;
+}
+
+.page-link {
+  color: var(--merah-biasa) !important;
+}
+
+.grid-custom {
+  display: grid;
+}
+
+.place-items-center-custom {
+  place-items: center;
+}
+
+.icon-eye:before {
+  font-size: 1.5em;
+}
+
+a:focus,
+a:hover {
+  color: var(--merah-biasa);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 21, 21, 0.1);
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(255, 21, 21, 0.1);
+}
+
+.form-control {
+  border: 1px solid #ff1515;
+}
+
+.form-control:focus {
+  border: 1px solid #ff1515;
+}
+
+.table-ket {
+  width: 20%;
+}
+
+.table-isi {
+  width: 80%;
+}
+
+.table-kastem {
+  width: 100%;
+}
+
+.table-kastem tr {
+  height: 3em;
 }

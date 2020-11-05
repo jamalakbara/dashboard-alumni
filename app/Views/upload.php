@@ -36,7 +36,7 @@
                             <input type="file" class="form-control-file" id="file" accept="text/csv" name="berkas">
                         </div>
 
-                        <button type="submit" class="btn btn-success btn-block" name="submit">Submit</button>
+                        <button type="submit" class="btn btn-outline-danger btn-block" name="submit">Submit</button>
                         <?php echo form_close(); ?>
                     </div>
                 </div>

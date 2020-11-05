@@ -19,38 +19,48 @@ class Home extends BaseController
 		helper('form');
 	}
 
-	public function index()
+	public function rekapitulasi()
 	{
 		if ($this->request->getMethod() == 'post') {
 			$filterTahun = $this->request->getPost("thnKeluar");
-			$data['totalLulus'] = $this->alumniModel->getTotalLulusFilter($filterTahun)['ID'];
-			$data['jenis'] = $this->pekerjaanModel->getJumJenisPekerjaanFilter($filterTahun);
-			$data['kategori'] = $this->pekerjaanModel->getJumKategoriPekerjaanFilter($filterTahun);
+			$data['totalLulus'] = $this->alumniModel->getTotalLulus($filterTahun)['ID'];
+			$data['jenis'] = $this->pekerjaanModel->getJumJenisPekerjaan($filterTahun);
+			$data['kategori'] = $this->pekerjaanModel->getJumKategoriPekerjaan($filterTahun);
 		} else {
 			$data['totalLulus'] = $this->alumniModel->getTotalLulus()['ID'];
 			$data['jenis'] = $this->pekerjaanModel->getJumJenisPekerjaan();
 			$data['kategori'] = $this->pekerjaanModel->getJumKategoriPekerjaan();
 		}
 
-		$data['title'] = 'Menu 1';
+		$data['title'] = 'Rekapitulasi';
 		$data['thnKeluar'] = $this->alumniModel->getTahunKeluar();
 
-		return view('menu1', $data);
+		return view('rekapitulasi', $data);
 	}
 
-	public function menu2()
+	public function bidang()
 	{
-		$data = [
-			'title' => 'Menu 2',
-			'totalLulus' => $this->alumniModel->getTotalLulus()['ID'],
-			'bidang' => $this->pekerjaanModel->getJumBidangPekerjaan(),
-		];
+		if ($this->request->getMethod() == 'post') {
+			$filterTahun = $this->request->getPost("thnKeluar");
+			$data['totalLulus'] = $this->alumniModel->getTotalLulus($filterTahun)['ID'];
+			$data['bidang'] = $this->pekerjaanModel->getJumBidangPekerjaan($filterTahun);
+		} else {
 
-		return view('menu2', $data);
+			$data = [
+				'totalLulus' => $this->alumniModel->getTotalLulus()['ID'],
+				'bidang' => $this->pekerjaanModel->getJumBidangPekerjaan(),
+			];
+		}
+
+		$data['title'] = 'Bidang';
+		$data['thnKeluar'] = $this->alumniModel->getTahunKeluar();
+
+		return view('bidang', $data);
 	}
 
-	public function menu3()
+	public function alumni()
 	{
+		$pager = \Config\Services::pager();
 
 		if ($this->request->getMethod() == "post") {
 			$data = [
@@ -61,7 +71,7 @@ class Home extends BaseController
 				'kategori' => $this->request->getVar('kategori') != "" ? $this->request->getVar('kategori') : null
 
 			];
-			$query = "SELECT NAMA, PRODI, EMAIL, TLP, INSTITUSI FROM alumni JOIN pekerjaan USING (ID)";
+			$query = "SELECT pekerjaan.ID, a.NAMA, a.PRODI, pekerjaan.TLP FROM pekerjaan JOIN (SELECT MAX(p.KEY) as MaxKey FROM pekerjaan p GROUP BY p.ID) AS JoinQuery ON JoinQuery.MaxKey = pekerjaan.KEY JOIN alumni AS a ON a.ID = pekerjaan.ID";
 
 			$first = true;
 			$prev = "";
@@ -69,24 +79,28 @@ class Home extends BaseController
 			foreach ($data as $dat => $d) {
 				switch ($dat) {
 					case "prodi":
-						$tambahan = 'PRODI';
+						$tambahan = 'a.PRODI';
 						break;
 					case "angkatan":
-						$tambahan = 'ANGKATAN';
+						$tambahan = 'a.ANGKATAN';
 						break;
 					case "perusahaan":
-						$tambahan = 'INSTITUSI';
+						$tambahan = 'pekerjaan.INSTITUSI';
 						break;
 					case "jenis":
-						$tambahan = 'JENIS';
+						$tambahan = 'pekerjaan.JENIS';
 						break;
 					case "kategori":
-						$tambahan = 'KATEGORI';
+						$tambahan = 'pekerjaan.KATEGORI';
 				}
 				if ($first && $prev != $dat) {
 					$prev = $dat;
 					if ($d != null) {
-						$query .= " WHERE $tambahan = '$d'";
+						if ($tambahan == 'a.PRODI') {
+							$query .= " WHERE $tambahan LIKE '%$d%'";
+						} else {
+							$query .= " WHERE $tambahan = '$d'";
+						}
 						$first = false;
 					}
 				} elseif (!$first && $prev != $dat) {
@@ -98,20 +112,55 @@ class Home extends BaseController
 				}
 			}
 
-			$filter = $this->pekerjaanModel->filterPekerjaan($query);
+			// inisiasi current page
+			$currentPage = $this->request->getGet('page') ? $this->request->getGet('page') : 1;
+			// inisiasi jumlah data yang bakal di show
+			$showPerPage = 10;
+			// ini untuk offest limit di query builder sesuai current page
+			$skip = ($currentPage - 1) * $showPerPage;
+			// inisiasi untuk bikin paginator
+
+			$filter = $this->pekerjaanModel->filterPekerjaan($showPerPage, $skip, $query);
+
+			$page = [
+				'paginate' => $this->pekerjaanModel->paginate(), //ngakalin biar bisa pake pager
+				'pager' => $this->pekerjaanModel->pager,
+				'currentPage' => $currentPage,
+				'showPerPage' => $showPerPage
+			];
 
 			$data = [
-				'pekerjaan' => $filter
+				'pekerjaan' => $filter,
+				'paginator' => $page
 			];
 		} else {
-			$data = [
-				'pekerjaan' => $this->pekerjaanModel->getInfoPekerjaan(),
+			// inisiasi current page
+			$currentPage = $this->request->getGet('page') ? $this->request->getGet('page') : 1;
+			// inisiasi jumlah data yang bakal di show
+			$showPerPage = 10;
+			// ini untuk offest limit di query builder sesuai current page
+			$skip = ($currentPage - 1) * $showPerPage;
+			// inisiasi untuk bikin paginator
+			$page = [
+				'paginate' => $this->pekerjaanModel->paginate(), //ngakalin biar bisa pake pager
+				'pager' => $this->pekerjaanModel->pager,
+				'currentPage' => $currentPage,
+				'showPerPage' => $showPerPage
 			];
+
+
+			if ($this->request->getGet('q')) {
+				$search = $this->request->getGet('q');
+				$data['pekerjaan'] = $this->pekerjaanModel->getInfoPekerjaan($showPerPage, $skip, $search);
+			} else {
+				$data['pekerjaan'] = $this->pekerjaanModel->getInfoPekerjaan($showPerPage, $skip);
+			}
+			// dd($data['pekerjaan']['count']);
+
+			$data['paginator'] = $page;
 		}
 
-		// dd($data["pekerjaan"]);
-
-		$data['title'] = 'Menu 3';
+		$data['title'] = 'Alumni';
 		$data['prodi'] = $this->alumniModel->getProdi();
 		$data['angkatan'] = $this->alumniModel->getAngkatan();
 		$data['perusahaan'] = $this->pekerjaanModel->getPerusahaan();
@@ -119,7 +168,16 @@ class Home extends BaseController
 		$data['kategori'] = $this->pekerjaanModel->getKategori();
 
 
-		return view('menu3', $data);
+		return view('alumni', $data);
+	}
+
+	public function alumniDetail($id)
+	{
+		$data = [
+			'title' => "Detail Alumni",
+			'pekerjaan' => $this->pekerjaanModel->getDetailInfoPekerjaan($id)
+		];
+		return view('alumni-detail', $data);
 	}
 
 	public function upload()
@@ -140,41 +198,91 @@ class Home extends BaseController
 					$handle = fopen($file, "r");
 					while (($row = fgetcsv($handle))) {
 						$i++;
-						if ($i == 1 || $i == 2) continue;
+						if ($i == 1) continue;
 
-						// Data yang akan disimpan ke dalam databse
 						$nim = $row[1];
-						// dd($this->alumniModel->where('NIM', $nim));
-						$rec = array(
-							'NIM' => $row[1],
-							'ANGKATAN' => $row[5],
-							'K_DOSEN' => $row[6],
-							'PRODI' => $row[7],
-							'IPK' => $row[8],
-							'TGL_KELUAR' => $row[9],
-							'KWN' => $row[10],
-							'PROVINSI' => $row[11],
-							'TAK' => $row[12],
-							'JK' => $row[13],
-							'J_SELEKSI' => $row[14],
-							'TGL_LAHIR' => $row[15],
-							'THN_STUDI' => $row[16],
-							'DMS_TINGGAL' => $row[20],
-							'WKT_TUNGGU' => $row[22],
-							'PENDAPATAN' => $row[23],
-							'POS_AWAL' => $row[26],
-							'POS_SKRG' => $row[27],
-							'CONTACT_UPDATED' => $row[30],
-							'CAREER_UPDATED' => $row[31],
-							'KAT_ANGKATAN' => $row[32],
-							'FAKULTAS' => $row[33],
-							'TGL_UPDATED' => 'cek',
+						$nama = $row[2];
+						$tgl_lahir = $row[13];
+						$alumniData = array(
+							'NIM' => $row[1] ? $row[1] : rand(111111111111, 999999999999),
+							'NAMA' => $row[2],
+							'ANGKATAN' => $row[3],
+							'K_DOSEN' => $row[4],
+							'PRODI' => $row[5],
+							'IPK' => $row[6],
+							'TGL_KELUAR' => $row[7],
+							'KWN' => $row[8],
+							'PROVINSI' => $row[9],
+							'TAK' => $row[10],
+							'JK' => $row[11],
+							'J_SELEKSI' => $row[12],
+							'TGL_LAHIR' => $row[13],
+							'THN_STUDI' => $row[14],
+							'DMS_TINGGAL' => $row[15],
+							'WKT_TUNGGU' => $row[16],
+							'PENDAPATAN' => $row[17],
+							'POS_AWAL' => $row[18],
+							'POS_SKRG' => $row[19],
+							'CONTACT_UPDATED' => $row[20],
+							'CAREER_UPDATED' => $row[21],
+							'KAT_ANGKATAN' => $row[22],
+							'FAKULTAS' => $row[23],
+							'TGL_UPDATED' => date('d-m-Y')
 						);
-						try {
-							$this->alumniModel->save($rec);
-						} catch (\mysqli_sql_exception $e) {
-							continue;
+
+						if ($row[24] && $row[25] && $row[26] && $row[27] && $row[28] && $row[29] && $row[30] && $row[31] && $row[32] && $row[33]) {
+							$pekerjaanData = array(
+								'TLP' => $row[24],
+								'EMAIL' => $row[25],
+								'KARIR' => $row[26],
+								'INSTITUSI' => $row[27],
+								'DMS_KERJA' => $row[28],
+								'BDG_PERUSAHAAN' => $row[29],
+								'JENIS' => $row[30],
+								'KATEGORI' => $row[31],
+								'SEKTOR_KERJA' => $row[32],
+								'NEGARA' => $row[33]
+							);
 						}
+
+						// update / insert alumni table
+
+						// kalo nim ada
+						if ($nim) {
+							if ($this->alumniModel->checkNim($nim)) {
+								$alumniData['ID'] = $this->alumniModel->checkNim($nim)['ID'];
+								$this->alumniModel->save($alumniData);
+							} else {
+								$alumniData['ID'] = $row[0] ? $row[0] : rand(1, 99999) . " $nama";
+								$this->alumniModel->insert($alumniData);
+							}
+						}
+						// kalo ada nama sama tgl lahir cocok 
+						elseif ($this->alumniModel->checkNamaTgl($nama, $tgl_lahir)) {
+							$id_alumni = $this->alumniModel->checkNamaTgl($nama, $tgl_lahir)['ID'];
+							$nim_alumni = $this->alumniModel->checkNamaTgl($nama, $tgl_lahir)['NIM'];
+							$alumniData['NIM'] = $nim_alumni;
+							$alumniData['ID'] = $id_alumni;
+							$this->alumniModel->save($alumniData);
+						} else {
+							$alumniData['ID'] = $row[0] ? $row[0] : rand(1, 99999) . " $nama";
+							$this->alumniModel->insert($alumniData);
+						}
+
+						// end update / insert alumni table
+
+						// insert pekerjaan table
+						if (isset($pekerjaanData)) {
+							try {
+								//code...
+								$pekerjaanData['ID'] = $alumniData['ID'];
+							} catch (\Throwable $th) {
+								dd($alumniData);
+							}
+							$pekerjaanData['TGL_UPDATED'] = date('d-m-Y');
+							$this->pekerjaanModel->insert($pekerjaanData);
+						}
+						// end insert pekerjaan table
 					}
 					fclose($handle);
 					session()->setFlashData('success', 'Data berhasil di-update!!');

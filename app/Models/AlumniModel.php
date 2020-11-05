@@ -10,6 +10,7 @@ class AlumniModel extends Model
     protected $primaryKey = 'NIM';
 
     protected $allowedFields = [
+        'ID',
         'NIM',
         'NAMA',
         'ANGKATAN',
@@ -33,16 +34,25 @@ class AlumniModel extends Model
         'CAREER_UPDATED',
         'KAT_ANGKATAN',
         'FAKULTAS',
+        'TGL_UPDATED'
     ];
 
-    public function getTotalLulus()
+    public function checkNim($nim)
     {
-        return $this->selectCount('ID')->first();
+        return $this->select('ID, NIM')->where("NIM = $nim")->first();
     }
 
-    public function getTotalLulusFilter($filter = '95')
+    public function checkNamaTgl($nama, $tgl_lahir)
     {
-        return $this->selectCount("ID")->where("TGL_KELUAR LIKE '%-{$filter}'")->first();
+        return $this->select('ID, NIM, NAMA, TGL_LAHIR')->where("NAMA = '$nama' AND TGL_LAHIR = '$tgl_lahir'")->first();
+    }
+
+    public function getTotalLulus($filter = '')
+    {
+        if ($filter != '') {
+            return $this->selectCount("ID")->where("TGL_KELUAR LIKE '%-{$filter}'")->first();
+        }
+        return $this->selectCount('ID')->first();
     }
 
     public function getTahunKeluar()

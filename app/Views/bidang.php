@@ -33,4 +33,38 @@
     </div>
 </div>
 
+<div class="floating-filter" data-toggle="modal" data-target="#filterModal">
+    <i class="feather icon-search" id="filter"></i>
+</div>
+
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Filter</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form action="/bidang" method="POST">
+                            <div class="form-group">
+                                <select name="thnKeluar" id="" class="form-control">
+                                    <?php foreach ($thnKeluar as $key => $value) { ?>
+                                        <option value="<?= $value ?>"><?= $value ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <button class="btn btn-success btn-block">Filter</button>
+                        </form>
+                    </div>
+                    <!-- Default select end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection() ?>

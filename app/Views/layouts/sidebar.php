@@ -28,34 +28,34 @@
         </div>
         <div class="pcoded-navigation-label">Menu</div>
         <ul class="pcoded-item pcoded-left-item">
-            <li class="<?php if ($title == 'Menu 1') { ?>active<?php } ?>">
+            <li class="<?php if ($title == 'Rekapitulasi') { ?>active<?php } ?>">
                 <a href="/dashboard" class="waves-effect waves-dark">
                     <span class="pcoded-micon">
-                        <i class="feather icon-home"></i>
+                        <i class="feather icon-folder"></i>
                     </span>
-                    <span class="pcoded-mtext">Menu 1</span>
+                    <span class="pcoded-mtext">Rekapitulasi</span>
                 </a>
             </li>
-            <li class="<?php if ($title == 'Menu 2') { ?>active<?php } ?>">
-                <a href="/menu2" class="waves-effect waves-dark">
+            <li class="<?php if ($title == 'Bidang') { ?>active<?php } ?>">
+                <a href="/bidang" class="waves-effect waves-dark">
                     <span class="pcoded-micon">
-                        <i class="feather icon-home"></i>
+                        <i class="feather icon-briefcase"></i>
                     </span>
-                    <span class="pcoded-mtext">Menu 2</span>
+                    <span class="pcoded-mtext">Bidang</span>
                 </a>
             </li>
-            <li class="<?php if ($title == 'Menu 3') { ?>active<?php } ?>">
-                <a href="/menu3" class="waves-effect waves-dark">
+            <li class="<?php if ($title == 'Alumni') { ?>active<?php } ?>">
+                <a href="/alumni" class="waves-effect waves-dark">
                     <span class="pcoded-micon">
-                        <i class="feather icon-home"></i>
+                        <i class="feather icon-award"></i>
                     </span>
-                    <span class="pcoded-mtext">Menu 3</span>
+                    <span class="pcoded-mtext">Alumni</span>
                 </a>
             </li>
             <li class="<?php if ($title == 'Upload') { ?>active<?php } ?>">
                 <a href="/upload" class="waves-effect waves-dark">
                     <span class="pcoded-micon">
-                        <i class="feather icon-home"></i>
+                        <i class="feather icon-upload"></i>
                     </span>
                     <span class="pcoded-mtext">Upload</span>
                 </a>

@@ -21,41 +21,72 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header borderless">
-                <h5>Tabel Kerja Prodi</h5>
-                <span>This example shows DataTables with just the hover class specified. This class will instruct DataTables' styling to highlight a row when the mouse is hovered over it.</span>
-
-                <div class="card-header-right">
-                    <ul class="list-unstyled card-option">
-                        <li data-toggle="modal" data-target="#filterModal">
-                            <i class="feather icon-search" id="filter"></i>
-                        </li>
-                        </li>
-                    </ul>
-                </div>
-            </div>
             <div class="card-block">
-                <div class="dt-responsive table-responsive">
-                    <table id="table_id" class="table table-striped table-hover table-bordered nowrap">
-                        <thead>
-                            <tr>
-                                <th>Nama</th>
-                                <th>Prodi</th>
-                                <th>Nama Perusahaan</th>
-                                <th>Email</th>
-                                <th>Nomor Telepon</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>Nama</th>
-                                <th>Prodi</th>
-                                <th>Nama Perusahaan</th>
-                                <th>Email</th>
-                                <th>Nomor Telepon</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <div class="row d-flex justify-content-end">
+                    <div class="col-md4">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+                            Filter
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <form action="/alumni" method="GET">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="q">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-danger" type="submit">Cari</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="dt-responsive table-responsive">
+                            <table id="table_id" class="table table-striped table-hover table-bordered nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Prodi</th>
+                                        <th>Nomor Telepon</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($pekerjaan['data']->getResultArray() as $key => $value) { ?>
+                                        <tr>
+                                            <td>
+                                                <?= $value['NAMA'] ?>
+                                            </td>
+                                            <td>
+                                                <?= $value['PRODI'] ?>
+                                            </td>
+                                            <td>
+                                                <?= $value['TLP'] ?>
+                                            </td>
+                                            <td class="grid-custom place-items-center-custom">
+                                                <a href="/alumni/detail/<?= $value["ID"] ?>" class="pcoded-micon">
+                                                    <i class="feather icon-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Prodi</th>
+                                        <th>Nomor Telepon</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <?= $paginator['pager']->makeLinks($paginator['currentPage'], $paginator['showPerPage'], $pekerjaan['count']) ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -75,7 +106,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <form method="POST" action="/filter-menu3">
+                        <form method="POST" action="/filter-alumni">
                             <div class="row">
                                 <div class="col-sm-12 m-b-30">
                                     <h4 class="sub-title">Program Studi</h4>
@@ -172,24 +203,4 @@
 <script src="/files/bower_components/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="/files/bower_components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
 <!-- Custom js -->
-<!-- <script src="/files/assets/pages/data-table/js/data-table-custom.js"></script> -->
-<script>
-    $(document).ready(() => {
-        $("#table_id").DataTable({
-            paging: true,
-            searching: true,
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '<?= site_url('Home/getData') ?>',
-                type: 'POST'
-            },
-            columnDefs: [{
-                targets: [0, 1, 2, 3, 4],
-                orderable: false
-            }],
-            order: []
-        })
-    })
-</script>
 <?= $this->endSection() ?>
