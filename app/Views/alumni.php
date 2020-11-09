@@ -106,7 +106,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-12">
-                        <form method="POST" action="/filter-alumni">
+                        <form method="GET" action="/filter-alumni">
                             <div class="row">
                                 <div class="col-sm-12 m-b-30">
                                     <h4 class="sub-title">Program Studi</h4>

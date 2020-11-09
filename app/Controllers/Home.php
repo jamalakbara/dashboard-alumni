@@ -32,6 +32,8 @@ class Home extends BaseController
 			$data['kategori'] = $this->pekerjaanModel->getJumKategoriPekerjaan();
 		}
 
+		$data["cluster"] = $this->alumniModel->getCluster();
+
 		$data['title'] = 'Rekapitulasi';
 		$data['thnKeluar'] = $this->alumniModel->getTahunKeluar();
 
@@ -159,6 +161,94 @@ class Home extends BaseController
 
 			$data['paginator'] = $page;
 		}
+
+		$data['title'] = 'Alumni';
+		$data['prodi'] = $this->alumniModel->getProdi();
+		$data['angkatan'] = $this->alumniModel->getAngkatan();
+		$data['perusahaan'] = $this->pekerjaanModel->getPerusahaan();
+		$data['jenis'] = $this->pekerjaanModel->getJenis();
+		$data['kategori'] = $this->pekerjaanModel->getKategori();
+
+
+		return view('alumni', $data);
+	}
+
+	public function filterAlumni()
+	{
+		$pager = \Config\Services::pager();
+
+
+		$data = [
+			'prodi' => $this->request->getVar('prodi') != "" ? $this->request->getVar('prodi') : null,
+			'angkatan' => $this->request->getVar('angkatan') != "" ? $this->request->getVar('angkatan') : null,
+			'perusahaan' => $this->request->getVar('perusahaan') != "" ? $this->request->getVar('perusahaan') : null,
+			'jenis' => $this->request->getVar('j_pekerjaan') != "" ? $this->request->getVar('j_pekerjaan') : null,
+			'kategori' => $this->request->getVar('kategori') != "" ? $this->request->getVar('kategori') : null
+
+		];
+		$query = "SELECT pekerjaan.ID, a.NAMA, a.PRODI, pekerjaan.TLP FROM pekerjaan JOIN (SELECT MAX(p.KEY) as MaxKey FROM pekerjaan p GROUP BY p.ID) AS JoinQuery ON JoinQuery.MaxKey = pekerjaan.KEY JOIN alumni AS a ON a.ID = pekerjaan.ID";
+
+		$first = true;
+		$prev = "";
+
+		foreach ($data as $dat => $d) {
+			switch ($dat) {
+				case "prodi":
+					$tambahan = 'a.PRODI';
+					break;
+				case "angkatan":
+					$tambahan = 'a.ANGKATAN';
+					break;
+				case "perusahaan":
+					$tambahan = 'pekerjaan.INSTITUSI';
+					break;
+				case "jenis":
+					$tambahan = 'pekerjaan.JENIS';
+					break;
+				case "kategori":
+					$tambahan = 'pekerjaan.KATEGORI';
+			}
+			if ($first && $prev != $dat) {
+				$prev = $dat;
+				if ($d != null) {
+					if ($tambahan == 'a.PRODI') {
+						$query .= " WHERE $tambahan LIKE '%$d%'";
+					} else {
+						$query .= " WHERE $tambahan = '$d'";
+					}
+					$first = false;
+				}
+			} elseif (!$first && $prev != $dat) {
+				$prev = $dat;
+				if ($d != null) {
+					$query .= " AND $tambahan = '$d'";
+					$first = false;
+				}
+			}
+		}
+
+		// inisiasi current page
+		$currentPage = $this->request->getGet('page') ? $this->request->getGet('page') : 1;
+		// inisiasi jumlah data yang bakal di show
+		$showPerPage = 10;
+		// ini untuk offest limit di query builder sesuai current page
+		$skip = ($currentPage - 1) * $showPerPage;
+		// inisiasi untuk bikin paginator
+
+		$filter = $this->pekerjaanModel->filterPekerjaan($showPerPage, $skip, $query);
+
+		$page = [
+			'paginate' => $this->pekerjaanModel->paginate(), //ngakalin biar bisa pake pager
+			'pager' => $this->pekerjaanModel->pager,
+			'currentPage' => $currentPage,
+			'showPerPage' => $showPerPage
+		];
+
+		$data = [
+			'pekerjaan' => $filter,
+			'paginator' => $page
+		];
+
 
 		$data['title'] = 'Alumni';
 		$data['prodi'] = $this->alumniModel->getProdi();
@@ -325,27 +415,4 @@ class Home extends BaseController
 
 		echo json_encode($data, JSON_PRETTY_PRINT);
 	}
-
-	// public function index()
-	// {
-
-	// 	// $jumlahKerjaArray = $this->pekerjaanModel->getJumKerjaProdi();
-	// 	// d($jumlahKerjaArray->getResultArray());
-
-	// 	// $jumlahBlmKerjaArray = $this->pekerjaanModel->getJumBelumKerjaProdi();
-	// 	// d($jumlahBlmKerjaArray->getResultArray());
-
-	// 	// $jumlahLulusanArray = $this->alumniModel->cek();
-	// 	// d($jumlahLulusanArray->getResultArray());
-
-	// 	$data = [
-	// 		'title' => 'Dashboard',
-	// 		'jumKerjaProdi' => $this->pekerjaanModel->getJumKerjaProdi()
-	// 	];
-
-	// 	return view('menu1', $data);
-	// }
-
-	//--------------------------------------------------------------------
-
 }

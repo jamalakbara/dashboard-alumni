@@ -40,7 +40,7 @@ $routes->post('/bidang', 'Home::bidang');
 
 $routes->get('/alumni', 'Home::alumni');
 $routes->get('/alumni/detail/(:segment)', 'Home::alumniDetail/$1');
-$routes->post('/filter-alumni', 'Home::alumni');
+$routes->get('/filter-alumni', 'Home::filterAlumni');
 
 $routes->get('/upload', 'Home::upload');
 $routes->post('/upload', 'Home::upload');

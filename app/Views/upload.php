@@ -25,7 +25,7 @@
         <div class="card">
             <div class="card-header borderless">
                 <h5>Input Data Baru</h5>
-                <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab cumque nihil eum doloremque beatae, placeat quo exercitationem velit omnis quos error dicta. Ipsa, doloremque cum qui porro consequuntur saepe enim.</span>
+                <span>Agar field / header dari file CSV selaras, template file CSV dapat diunduh pada link berikut (<a href="/files/files/template.csv" download style="font-weight: bold;">Download Template CSV</a>)</span>
             </div>
             <div class="card-block">
                 <div class="row">

@@ -88,4 +88,39 @@ class AlumniModel extends Model
             ->where("ANGKATAN != NULL OR ANGKATAN != ''")
             ->groupBy("ANGKATAN")->get();
     }
+
+    public function getCluster()
+    {
+        $data =  $this->select("ANGKATAN, TGL_KELUAR")->get();
+
+        $cluster = [
+            'fresh graduate' => 0,
+            'junior' => 0,
+            'senior' => 0,
+            'notable' => 0,
+        ];
+        foreach ($data->getResultArray() as $value) {
+            $tgl_keluar = $value['TGL_KELUAR'] != "" || $value['TGL_KELUAR'] != null ? strtotime($value['TGL_KELUAR']) : null;
+            $thn_keluar = $tgl_keluar != null ? (int)date("Y", $tgl_keluar) : 0;
+
+            $angkatan = $value['ANGKATAN'] != "" || $value['ANGKATAN'] != null ? (int)($value['ANGKATAN']) : 0;
+
+            if ($thn_keluar != 0 && $angkatan != 0) {
+                if ($thn_keluar > $angkatan) {
+                    $hasil_pengurangan = $thn_keluar - $angkatan;
+                    if ($hasil_pengurangan >= 1 && $hasil_pengurangan < 3) {
+                        $cluster['fresh graduate'] += 1;
+                    } elseif ($hasil_pengurangan >= 3 && $hasil_pengurangan < 5) {
+                        $cluster['junior'] += 1;
+                    } elseif ($hasil_pengurangan >= 5 && $hasil_pengurangan < 15) {
+                        $cluster['senior'] += 1;
+                    } elseif ($hasil_pengurangan >= 15) {
+                        $cluster['notable'] += 1;
+                    }
+                }
+            }
+        }
+
+        return $cluster;
+    }
 }
